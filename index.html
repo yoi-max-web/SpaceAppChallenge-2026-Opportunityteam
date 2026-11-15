@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Operación Pamplonita: Misión Tierra</title>
+<meta name="description" content="RPG 2D pixel art del NASA Space Apps Challenge 2026 Cúcuta para salvar el río Pamplonita con datos de la NASA.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=Press+Start+2P&display=swap');
+:root{
+  --space:#070b24; --space2:#0d1a4a; --nasa:#1e5bc6; --sky:#4fa3ff; --orange:#ff8a1f; --yellow:#ffd23f;
+  --green:#6fd04f; --red:#e23b3b; --ink:#e8f0ff; --panel:#0e1840cc; --line:#000;
+  --px:'Press Start 2P',monospace; --body:'Pixelify Sans',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{font-family:var(--body);font-size:1.1rem;color:var(--ink);background:var(--space);overflow-x:hidden;line-height:1.55}
+#stars{position:fixed;inset:0;z-index:-1;width:100%;height:100%}
+h1,h2,h3,.btn,.nav a.logo{font-family:var(--px)}
+img{image-rendering:pixelated;max-width:100%}
+section{padding:90px 5vw;max-width:1200px;margin:auto}
+h2{font-size:clamp(1rem,3.2vw,1.7rem);color:var(--yellow);text-shadow:4px 4px 0 #000;margin-bottom:12px;line-height:1.5}
+.sub{color:#a9c4ff;margin-bottom:40px;max-width:640px}
+/* pixel border */
+.pixel{background:var(--panel);backdrop-filter:blur(4px);
+  box-shadow:0 -4px 0 0 var(--line),0 4px 0 0 var(--line),-4px 0 0 0 var(--line),4px 0 0 0 var(--line),0 0 24px #1e5bc655}
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:center;align-items:center;padding:12px 5vw;background:#070b24ee;border-bottom:4px solid #000;transition:.3s}
+.nav.scrolled{padding:8px 5vw;box-shadow:0 4px 0 var(--nasa)}
+.nav .logo{color:var(--orange);text-decoration:none;font-size:.75rem;display:flex;align-items:center;gap:12px}
+.nav ul{display:flex;gap:22px;list-style:none;align-items:center}
+.nav ul a{color:var(--ink);text-decoration:none;font-size:1rem;position:relative}
+.nav ul a:hover{color:var(--yellow)}
+.nav ul a::before{content:'>';position:absolute;left:-16px;opacity:0;transition:.2s;color:var(--orange);font-size:.7rem;top:4px}
+.nav ul a:hover::before{opacity:1}
+.burger{display:none;background:none;border:3px solid var(--ink);width:46px;height:42px;cursor:pointer;padding:0;position:relative}
+.burger span{position:absolute;left:8px;right:8px;height:4px;background:var(--ink);transition:.3s}
+.burger span:nth-child(1){top:8px}.burger span:nth-child(2){top:17px}.burger span:nth-child(3){top:26px}
+.burger.open span:nth-child(1){top:17px;transform:rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.overlay{position:fixed;inset:0;background:#000a;z-index:45;opacity:0;pointer-events:none;transition:.3s}
+.overlay.show{opacity:1;pointer-events:auto}
+@media(max-width:760px){
+  .nav{justify-content:flex-start}
+  .burger{display:block;z-index:70}
+  .nav ul{position:fixed;top:0;left:0;bottom:0;width:72%;max-width:300px;flex-direction:column;align-items:flex-start;gap:26px;
+    background:#070b24;padding:90px 28px 28px;border-right:4px solid #000;box-shadow:4px 0 0 var(--nasa);
+    transform:translateX(-105%);transition:transform .4s cubic-bezier(.7,0,.3,1);z-index:60}
+  .nav ul.open{transform:translateX(0)}
+}
+/* BUTTONS */
+.btn{display:inline-block;text-decoration:none;color:#fff;background:var(--orange);padding:16px 22px;font-size:.8rem;border:none;cursor:pointer;
+  box-shadow:0 -4px 0 #000,0 4px 0 #000,-4px 0 0 #000,4px 0 0 #000,inset -4px -4px 0 #c25a00,inset 4px 4px 0 #ffb866;transition:transform .1s}
+.btn:hover{transform:translateY(-3px);filter:brightness(1.1)}
+.btn:active{transform:translateY(2px)}
+.btn.play{font-size:clamp(.9rem,3vw,1.4rem);padding:26px 38px;animation:pulse 1.6s infinite;position:relative}
+.btn.ghost{background:var(--nasa);box-shadow:0 -4px 0 #000,0 4px 0 #000,-4px 0 0 #000,4px 0 0 #000,inset -4px -4px 0 #123d8a,inset 4px 4px 0 #6aa2ff}
+@keyframes pulse{0%,100%{box-shadow:0 -4px 0 #000,0 4px 0 #000,-4px 0 0 #000,4px 0 0 #000,inset -4px -4px 0 #c25a00,inset 4px 4px 0 #ffb866,0 0 0 0 #ff8a1f99}
+  50%{box-shadow:0 -4px 0 #000,0 4px 0 #000,-4px 0 0 #000,4px 0 0 #000,inset -4px -4px 0 #c25a00,inset 4px 4px 0 #ffb866,0 0 35px 12px #ff8a1f55}}
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding-top:110px;position:relative;max-width:none;
+  background:linear-gradient(180deg,transparent 0%,#0d1a4a88 60%,#1e5bc644 85%,#2b7a3a55 100%)}
+.badge{font-family:var(--px);font-size:.6rem;background:var(--nasa);padding:10px 14px;box-shadow:0 0 0 4px #000;margin-bottom:28px;line-height:1.6}
+.hero h1{font-size:clamp(1.4rem,6.5vw,3.6rem);line-height:1.35;color:#fff;text-shadow:6px 6px 0 var(--nasa),10px 10px 0 #000;margin-bottom:10px}
+.hero h1 span{color:var(--orange)}
+.tag{font-family:var(--px);font-size:clamp(.6rem,1.8vw,.9rem);color:var(--green);margin:14px 0 26px;text-shadow:3px 3px 0 #000}
+.hero p.syn{max-width:680px;font-size:1.25rem;margin-bottom:38px;color:#d5e3ff}
+.hero .row{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+.logo-hero{display:block;max-width:min(260px,70vw);max-height:160px;width:auto;height:auto;margin:0 auto 26px;image-rendering:auto;filter:drop-shadow(0 0 14px #1e5bc6aa)}
+.river{height:40px;margin-top:60px;width:100%;background:repeating-linear-gradient(90deg,#4fa3ff 0 24px,#1e5bc6 24px 48px);opacity:.7;animation:flow 3s linear infinite;
+  clip-path:polygon(0 30%,10% 10%,20% 40%,30% 15%,40% 45%,50% 10%,60% 40%,70% 15%,80% 45%,90% 10%,100% 35%,100% 100%,0 100%)}
+@keyframes flow{to{background-position:48px 0}}
+/* CAROUSEL */
+.carousel{position:relative;overflow:hidden;padding:14px}
+.track{display:flex;transition:transform .5s cubic-bezier(.7,0,.3,1)}
+.slide{min-width:100%;position:relative;cursor:zoom-in}
+.slide img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#0a1030 repeating-linear-gradient(45deg,#0d1a4a 0 12px,#101f55 12px 24px);min-height:200px}
+.cap{position:absolute;left:0;bottom:0;background:#000b;padding:10px 16px;font-family:var(--px);font-size:.6rem;color:var(--yellow)}
+.arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:5;font-family:var(--px);background:var(--orange);color:#fff;border:4px solid #000;width:48px;height:48px;cursor:pointer;font-size:1rem}
+.arrow:hover{background:var(--yellow);color:#000}
+.prev{left:6px}.next{right:6px}
+.dots{display:flex;gap:10px;justify-content:center;margin-top:18px}
+.dots button{width:16px;height:16px;background:#33407a;border:3px solid #000;cursor:pointer}
+.dots button.on{background:var(--orange);transform:scale(1.3)}
+.lightbox{position:fixed;inset:0;background:#000d;z-index:100;display:none;align-items:center;justify-content:center;padding:4vw;cursor:zoom-out}
+.lightbox.show{display:flex;animation:fade .25s}
+.lightbox img{max-height:90vh;border:4px solid var(--orange);box-shadow:0 0 40px var(--nasa)}
+@keyframes fade{from{opacity:0}}
+/* CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px}
+.card{padding:26px;transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-8px)}
+.card .ico{font-family:var(--px);font-size:1.4rem;color:var(--orange);text-shadow:3px 3px 0 #000;margin-bottom:14px}
+.card h3{font-size:.75rem;line-height:1.6;margin-bottom:12px;color:var(--sky)}
+.card .stat{margin-top:14px;font-family:var(--px);font-size:.55rem;color:var(--green)}
+.bar{height:12px;background:#000;margin-top:6px;border:2px solid #000;outline:2px solid #33407a}
+.bar i{display:block;height:100%;width:0;background:var(--green);transition:width 1.2s steps(12)}
+.card:nth-child(2) .bar i{background:var(--orange)}.card:nth-child(3) .bar i{background:var(--sky)}.card:nth-child(4) .bar i{background:var(--red)}
+.data{margin-top:34px;padding:20px;font-size:1.1rem;border-left:8px solid var(--orange)}
+/* TEAM */
+.team{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:30px}
+.char{text-align:center;padding:22px 16px;transition:.2s;cursor:pointer}
+.char:hover{transform:translateY(-8px) scale(1.03);box-shadow:0 -4px 0 #000,0 4px 0 #000,-4px 0 0 #000,4px 0 0 #000,0 0 30px var(--orange)}
+.avatar{width:120px;height:120px;margin:0 auto 16px;background:#0a1030;border:4px solid var(--yellow);display:flex;align-items:center;justify-content:center;font-family:var(--px);font-size:.6rem;color:#a9c4ff;overflow:hidden}
+.avatar{position:relative}.avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#0a1030}
+.char h3{font-size:.65rem;line-height:1.6;color:#fff;margin-bottom:8px}
+.role{color:var(--orange);font-weight:700}
+.lvl{font-family:var(--px);font-size:.5rem;color:var(--green);margin-top:10px}
+/* GALERIA */
+.up{padding:20px;margin-bottom:30px;display:flex;flex-wrap:wrap;gap:18px;align-items:center}
+.up small{flex:1;min-width:220px;color:#a9c4ff;font-size:.95rem}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.ph{position:relative;aspect-ratio:1;border:4px solid #000;background:#0a1030 repeating-linear-gradient(45deg,#0d1a4a 0 12px,#101f55 12px 24px);overflow:hidden;cursor:zoom-in;box-shadow:0 0 0 3px #33407a;transition:.2s;animation:fade .4s}
+.ph:hover{transform:scale(1.04) rotate(-1deg);box-shadow:0 0 0 3px var(--orange),0 0 24px var(--orange)}
+.ph img{width:100%;height:100%;object-fit:cover;display:block;image-rendering:auto}
+.ph figcaption{position:absolute;left:0;right:0;bottom:0;background:#000b;font-size:.85rem;padding:6px 10px;color:var(--yellow)}
+/* FOOTER */
+footer{text-align:center;padding:50px 5vw;border-top:4px solid #000;background:#050818;box-shadow:0 -4px 0 var(--nasa)}
+footer p{font-size:1rem;color:#a9c4ff;margin-top:10px}
+footer .px{font-family:var(--px);font-size:.65rem;color:var(--yellow);line-height:1.8}
+.reveal{opacity:0;transform:translateY(40px);transition:.7s}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+
+<nav class="nav" id="nav">
+    <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
+  <ul id="menu">
+    <li><a href="#inicio">Inicio</a></li>
+    <li><a href="#capturas">Capturas</a></li>
+    <li><a href="#mision">Misión</a></li>
+    <li><a href="#equipo">Equipo</a></li>
+    <li><a href="#galeria">Evento</a></li>
+    <li><a class="btn" id="navPlay" href="AQUÍ_VA_EL_LINK_DEL_JUEGO" style="font-size:.6rem;padding:10px 14px">JUGAR</a></li>
+  </ul>
+</nav>
+<div class="overlay" id="ov"></div>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="inicio">
+  <!-- Logo: reemplaza logo1.png por tu imagen (se muestra tal cual, sin marco) -->
+  <img class="logo-hero" src="logo1.png" alt="Logo del juego" onerror="this.remove()">
+  <h1>OPERACIÓN <span>PAMPLONITA</span><br>MISIÓN TIERRA</h1>
+  <div class="tag" id="typed"></div>
+  <p class="syn">Eres astronauta y científico. Despega desde la Estación Terrestre, analiza datos satelitales de la NASA y regresa a Cúcuta para <b>salvar y recuperar el río Pamplonita</b> antes de que sea tarde.</p>
+  <div class="row">
+    <!-- PEGA AQUÍ EL LINK DE TU JUEGO (también en el botón JUGAR del menú: id="navPlay") -->
+    <a class="btn play" id="playBtn" href="AQUÍ_VA_EL_LINK_DEL_JUEGO" target="_blank" rel="noopener">JUGAR AHORA</a>
+    <a class="btn ghost" href="#mision">VER MISIÓN</a>
+  </div>
+  <div class="river"></div>
+</section>
+
+<!-- ============ CAPTURAS ============ -->
+<section id="capturas">
+  <h2 class="reveal">CAPTURAS</h2>
+  <p class="sub reveal">Del lanzamiento en órbita a las orillas del río. Haz clic en una imagen para ampliarla.</p>
+  <div class="carousel pixel reveal">
+    <button class="arrow prev" aria-label="Anterior">&lt;</button>
+    <div class="track" id="track">
+      <!-- Reemplaza las rutas captura1.png ... captura5.png por tus imágenes -->
+      <div class="slide"><img src="captura1.png" alt="Astronauta en órbita"><div class="cap">CAPTURA 1 · EN ÓRBITA</div></div>
+      <div class="slide"><img src="captura2.png" alt="Estación Terrestre NASA"><div class="cap">CAPTURA 2 · ESTACIÓN TERRESTRE</div></div>
+      <div class="slide"><img src="captura3.png" alt="Río Pamplonita, Cúcuta"><div class="cap">CAPTURA 3 · RÍO PAMPLONITA</div></div>
+      <div class="slide"><img src="captura4.png" alt="Captura 4"><div class="cap">CAPTURA 4 · (TU TÍTULO)</div></div>
+    </div>
+    <button class="arrow next" aria-label="Siguiente">&gt;</button>
+  </div>
+  <div class="dots" id="dots"></div>
+</section>
+<div class="lightbox" id="lb"><img alt="Captura ampliada"></div>
+
+<!-- ============ MISIÓN ============ -->
+<section id="mision">
+  <h2 class="reveal">SOBRE LA MISIÓN</h2>
+  <p class="sub reveal">Un RPG 2D donde la ciencia espacial se convierte en acción para tu ciudad.</p>
+  <div class="grid">
+    <article class="card pixel reveal"><div class="ico">01</div><h3>EXPLORA EN 2D</h3>
+      <p>Muévete por la Estación Terrestre, entra a los módulos (Hábitat, Laboratorio, Centro de Control, Taller CubeSat) y desbloquéalos a medida que avanzas.</p>
+      <div class="stat">AVENTURA<div class="bar"><i data-w="85%"></i></div></div></article>
+    <article class="card pixel reveal"><div class="ico">02</div><h3>DATOS NASA</h3>
+      <p>Imágenes y datos satelitales de la NASA te ayudan a detectar contaminación, cambios en el cauce y salud del ecosistema.</p>
+      <div class="stat">CIENCIA<div class="bar"><i data-w="95%"></i></div></div></article>
+    <article class="card pixel reveal"><div class="ico">03</div><h3>RESCATA EL RÍO</h3>
+      <p>Cada decisión cuenta: usa fondos y puntos de ciencia para diseñar soluciones que recuperen el Pamplonita.</p>
+      <div class="stat">IMPACTO<div class="bar"><i data-w="75%"></i></div></div></article>
+    <article class="card pixel reveal"><div class="ico">04</div><h3>DESPEGA Y REGRESA</h3>
+      <p>Prepara la nave, lanza tu misión y vuelve a Cúcuta con conocimiento para transformar tu comunidad.</p>
+      <div class="stat">ÉPICA<div class="bar"><i data-w="90%"></i></div></div></article>
+  </div>
+  <div class="data pixel reveal"><b>¿Cómo usamos los datos?</b> Aquí puedes explicar qué datasets de NASA usaron (p. ej. Earthdata, Landsat, MODIS, GPM) y cómo se reflejan en las mecánicas del juego.</div>
+</section>
+
+<!-- ============ EQUIPO ============ -->
+<section id="equipo">
+  <h2 class="reveal">SELECCIÓN DE PERSONAJE</h2>
+  <p class="sub reveal">El equipo detrás de la misión.</p>
+  <div class="team">
+    <!-- Duplica una tarjeta por integrante. Cambia nombre, rol y reemplaza avatar1.png ... avatar4.png por tus fotos -->
+    <article class="char pixel reveal"><div class="avatar"><img src="avatar1.png" alt="Integrante 1" onerror="this.remove()">FOTO</div>
+      <h3>NOMBRE 1</h3><div class="role">Rol: Líder / Game Designer</div><div class="lvl">NIV. 99</div></article>
+    <article class="char pixel reveal"><div class="avatar"><img src="avatar2.png" alt="Integrante 2" onerror="this.remove()">FOTO</div>
+      <h3>NOMBRE 2</h3><div class="role">Rol: Programador (Godot)</div><div class="lvl">NIV. 99</div></article>
+    <article class="char pixel reveal"><div class="avatar"><img src="avatar3.png" alt="Integrante 3" onerror="this.remove()">FOTO</div>
+      <h3>NOMBRE 3</h3><div class="role">Rol: Arte Pixel Art</div><div class="lvl">NIV. 99</div></article>
+    <article class="char pixel reveal"><div class="avatar"><img src="avatar4.png" alt="Integrante 4" onerror="this.remove()">FOTO</div>
+      <h3>NOMBRE 4</h3><div class="role">Rol: Datos científicos NASA</div><div class="lvl">NIV. 99</div></article>
+  </div>
+</section>
+
+<!-- ============ GALERÍA DEL EVENTO ============ -->
+<section id="galeria">
+  <h2 class="reveal">GALERÍA DEL EVENTO</h2>
+  <p class="sub reveal">Nosotros durante el NASA Space Apps Challenge 2026 en Cúcuta.</p>
+  <div class="up pixel reveal">
+    <label class="btn ghost" for="fileIn">SUBIR FOTOS</label>
+    <input type="file" id="fileIn" accept="image/*" multiple hidden>
+    <small>Las fotos que subas aquí se ven solo en tu navegador (vista previa). Para publicarlas para todos, guárdalas en la carpeta <b>galeria/</b> y agrégalas a la lista <b>FOTOS_EVENTO</b> del script.</small>
+  </div>
+  <div class="gal" id="gal"></div>
+</section>
+
+<footer>
+  <div class="px">NASA SPACE APPS CHALLENGE 2026<br>CÚCUTA, NORTE DE SANTANDER · COLOMBIA</div>
+  <p>Hecho con pasión para salvar el río Pamplonita · © 2026 Equipo Operación Pamplonita</p>
+</footer>
+
+<script>
+/* ===== Link del juego: cámbialo UNA sola vez aquí (o directamente en los href del HTML) ===== */
+const GAME_URL = "AQUÍ_VA_EL_LINK_DEL_JUEGO";
+if (!GAME_URL.startsWith("AQUÍ")) document.querySelectorAll('#playBtn,#navPlay').forEach(a => a.href = GAME_URL);
+
+/* ===== Estrellas animadas ===== */
+const cv = document.getElementById('stars'), cx = cv.getContext('2d');
+let W, H, stars = [];
+function resize(){
+  W = cv.width = innerWidth; H = cv.height = innerHeight;
+  stars = Array.from({length: Math.min(160, W/6)}, () => ({x:Math.random()*W, y:Math.random()*H, s:Math.random()<.2?3:2, v:.1+Math.random()*.5, t:Math.random()*6}));
+}
+addEventListener('resize', resize); resize();
+(function loop(){
+  const g = cx.createLinearGradient(0,0,0,H); g.addColorStop(0,'#050818'); g.addColorStop(1,'#0d1a4a');
+  cx.fillStyle = g; cx.fillRect(0,0,W,H);
+  for (const s of stars){
+    s.t += .04; s.y += s.v; if (s.y > H) { s.y = 0; s.x = Math.random()*W; }
+    cx.globalAlpha = .5 + Math.sin(s.t)*.5;
+    cx.fillStyle = s.s === 3 ? '#ffd23f' : '#fff';
+    cx.fillRect(s.x|0, s.y|0, s.s, s.s);
+  }
+  cx.globalAlpha = 1; requestAnimationFrame(loop);
+})();
+
+/* ===== Nav ===== */
+const nav = document.getElementById('nav'), menu = document.getElementById('menu');
+addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 30));
+const burger = document.getElementById('burger'), ov = document.getElementById('ov');
+function toggleMenu(open){
+  open = open ?? !menu.classList.contains('open');
+  menu.classList.toggle('open', open); burger.classList.toggle('open', open); ov.classList.toggle('show', open);
+  burger.setAttribute('aria-expanded', open);
+}
+burger.onclick = () => toggleMenu();
+ov.onclick = () => toggleMenu(false);
+menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
+addEventListener('keydown', e => { if (e.key === 'Escape') toggleMenu(false); });
+addEventListener('resize', () => { if (innerWidth > 760) toggleMenu(false); });
+
+/* ===== Texto tipo máquina de escribir ===== */
+const phrases = ["> CARGANDO MISIÓN...", "> SALVEMOS EL RÍO PAMPLONITA", "> DATOS NASA + PIXEL ART", "> ¿LISTO PARA DESPEGAR?"];
+let pi = 0, ci = 0, del = false; const typed = document.getElementById('typed');
+(function type(){
+  const p = phrases[pi];
+  typed.textContent = p.slice(0, ci) + '█';
+  if (!del && ci++ === p.length) { del = true; return setTimeout(type, 1400); }
+  if (del && --ci === 0) { del = false; pi = (pi+1) % phrases.length; }
+  setTimeout(type, del ? 30 : 70);
+})();
+
+/* ===== Carrusel ===== */
+const track = document.getElementById('track'), slides = track.children, dots = document.getElementById('dots');
+let idx = 0, timer;
+for (let i = 0; i < slides.length; i++){ const b = document.createElement('button'); b.setAttribute('aria-label','Ir a captura '+(i+1)); b.onclick = () => go(i); dots.appendChild(b); }
+function go(i){
+  idx = (i + slides.length) % slides.length;
+  track.style.transform = `translateX(-${idx*100}%)`;
+  [...dots.children].forEach((d,k) => d.classList.toggle('on', k === idx));
+  clearInterval(timer); timer = setInterval(() => go(idx+1), 5000);
+}
+document.querySelector('.prev').onclick = () => go(idx-1);
+document.querySelector('.next').onclick = () => go(idx+1);
+let tx = 0; // swipe en celular
+track.addEventListener('touchstart', e => tx = e.touches[0].clientX, {passive:true});
+track.addEventListener('touchend', e => { const d = e.changedTouches[0].clientX - tx; if (Math.abs(d) > 50) go(idx + (d < 0 ? 1 : -1)); });
+go(0);
+/* Lightbox */
+const lb = document.getElementById('lb'), lbi = lb.querySelector('img');
+[...slides].forEach(s => s.onclick = () => { lbi.src = s.querySelector('img').src; lb.classList.add('show'); });
+lb.onclick = () => lb.classList.remove('show');
+addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('show'); if (e.key === 'ArrowRight') go(idx+1); if (e.key === 'ArrowLeft') go(idx-1); });
+
+/* ===== Galería del evento ===== */
+// Agrega aquí tus fotos: guarda las imágenes en la carpeta galeria/ y añade una línea por foto
+const FOTOS_EVENTO = [
+  { src: 'galeria/evento1.jpg', t: 'Trabajando en el juego' },
+  { src: 'galeria/evento2.jpg', t: 'Todo el equipo' },
+  { src: 'galeria/evento3.jpg', t: 'Presentación' },
+  { src: 'galeria/evento4.jpg', t: 'Programando' },
+  { src: 'galeria/evento5.jpg', t: 'Probando la misión' },
+  { src: 'galeria/evento6.jpg', t: 'Foto final' }
+];
+const gal = document.getElementById('gal');
+function addPhoto(src, cap, first){
+  const f = document.createElement('figure'); f.className = 'ph';
+  const im = new Image(); im.src = src; im.alt = cap; im.loading = 'lazy';
+  im.onerror = () => im.remove();
+  f.append(im);
+  if (cap){ const c = document.createElement('figcaption'); c.textContent = cap; f.append(c); }
+  f.onclick = () => { if (im.isConnected){ lbi.src = im.src; lb.classList.add('show'); } };
+  first ? gal.prepend(f) : gal.append(f);
+}
+FOTOS_EVENTO.forEach(p => addPhoto(p.src, p.t));
+document.getElementById('fileIn').addEventListener('change', e => {
+  [...e.target.files].forEach(file => addPhoto(URL.createObjectURL(file), 'Foto nueva', true));
+  e.target.value = '';
+});
+
+/* ===== Reveal al hacer scroll + barras de stats ===== */
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add('in');
+  e.target.querySelectorAll('.bar i').forEach(b => b.style.width = b.dataset.w);
+  io.unobserve(e.target);
+}), {threshold:.15});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ===== Microinteracción: tilt en tarjetas ===== */
+document.querySelectorAll('.card,.char').forEach(c => {
+  c.addEventListener('mousemove', e => { const r = c.getBoundingClientRect(); c.style.transform = `translateY(-8px) perspective(600px) rotateY(${((e.clientX-r.left)/r.width-.5)*10}deg) rotateX(${-((e.clientY-r.top)/r.height-.5)*10}deg)`; });
+  c.addEventListener('mouseleave', () => c.style.transform = '');
+});
+</script>
+</body>
+</html>
