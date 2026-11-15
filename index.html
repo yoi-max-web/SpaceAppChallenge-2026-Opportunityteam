@@ -55,7 +55,6 @@ h2{font-size:clamp(1rem,3.2vw,1.7rem);color:var(--yellow);text-shadow:4px 4px 0 
 .btn:hover{transform:translateY(-3px);filter:brightness(1.1)}
 .btn:active{transform:translateY(2px)}
 .btn.play{font-size:clamp(.9rem,3vw,1.4rem);padding:26px 38px;animation:pulse 1.6s infinite;position:relative}
-.btn.ghost{background:var(--nasa);box-shadow:0 -4px 0 #000,0 4px 0 #000,-4px 0 0 #000,4px 0 0 #000,inset -4px -4px 0 #123d8a,inset 4px 4px 0 #6aa2ff}
 @keyframes pulse{0%,100%{box-shadow:0 -4px 0 #000,0 4px 0 #000,-4px 0 0 #000,4px 0 0 #000,inset -4px -4px 0 #c25a00,inset 4px 4px 0 #ffb866,0 0 0 0 #ff8a1f99}
   50%{box-shadow:0 -4px 0 #000,0 4px 0 #000,-4px 0 0 #000,4px 0 0 #000,inset -4px -4px 0 #c25a00,inset 4px 4px 0 #ffb866,0 0 35px 12px #ff8a1f55}}
 /* HERO */
@@ -67,10 +66,7 @@ h2{font-size:clamp(1rem,3.2vw,1.7rem);color:var(--yellow);text-shadow:4px 4px 0 
 .tag{font-family:var(--px);font-size:clamp(.6rem,1.8vw,.9rem);color:var(--green);margin:14px 0 26px;text-shadow:3px 3px 0 #000}
 .hero p.syn{max-width:680px;font-size:1.25rem;margin-bottom:38px;color:#d5e3ff}
 .hero .row{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
-.logo-hero{display:block;max-width:min(260px,70vw);max-height:160px;width:auto;height:auto;margin:0 auto 26px;image-rendering:auto;filter:drop-shadow(0 0 14px #1e5bc6aa)}
-.river{height:40px;margin-top:60px;width:100%;background:repeating-linear-gradient(90deg,#4fa3ff 0 24px,#1e5bc6 24px 48px);opacity:.7;animation:flow 3s linear infinite;
-  clip-path:polygon(0 30%,10% 10%,20% 40%,30% 15%,40% 45%,50% 10%,60% 40%,70% 15%,80% 45%,90% 10%,100% 35%,100% 100%,0 100%)}
-@keyframes flow{to{background-position:48px 0}}
+.logo-hero{display:block;width:min(420px,80vw);max-height:300px;object-fit:contain;height:auto;margin:40px auto 40px;image-rendering:auto;filter:drop-shadow(0 0 14px #1e5bc6aa)}
 /* CAROUSEL */
 .carousel{position:relative;overflow:hidden;padding:14px}
 .track{display:flex;transition:transform .5s cubic-bezier(.7,0,.3,1)}
@@ -106,10 +102,7 @@ h2{font-size:clamp(1rem,3.2vw,1.7rem);color:var(--yellow);text-shadow:4px 4px 0 
 .avatar{position:relative}.avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#0a1030}
 .char h3{font-size:.65rem;line-height:1.6;color:#fff;margin-bottom:8px}
 .role{color:var(--orange);font-weight:700}
-.lvl{font-family:var(--px);font-size:.5rem;color:var(--green);margin-top:10px}
 /* GALERIA */
-.up{padding:20px;margin-bottom:30px;display:flex;flex-wrap:wrap;gap:18px;align-items:center}
-.up small{flex:1;min-width:220px;color:#a9c4ff;font-size:.95rem}
 .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
 .ph{position:relative;aspect-ratio:1;border:4px solid #000;background:#0a1030 repeating-linear-gradient(45deg,#0d1a4a 0 12px,#101f55 12px 24px);overflow:hidden;cursor:zoom-in;box-shadow:0 0 0 3px #33407a;transition:.2s;animation:fade .4s}
 .ph:hover{transform:scale(1.04) rotate(-1deg);box-shadow:0 0 0 3px var(--orange),0 0 24px var(--orange)}
@@ -135,24 +128,21 @@ footer .px{font-family:var(--px);font-size:.65rem;color:var(--yellow);line-heigh
     <li><a href="#mision">Misión</a></li>
     <li><a href="#equipo">Equipo</a></li>
     <li><a href="#galeria">Evento</a></li>
-    <li><a class="btn" id="navPlay" href="AQUÍ_VA_EL_LINK_DEL_JUEGO" style="font-size:.6rem;padding:10px 14px">JUGAR</a></li>
   </ul>
 </nav>
 <div class="overlay" id="ov"></div>
 
 <!-- ============ HERO ============ -->
 <section class="hero" id="inicio">
-  <!-- Logo: reemplaza logo1.png por tu imagen (se muestra tal cual, sin marco) -->
-  <img class="logo-hero" src="logo1.png" alt="Logo del juego" onerror="this.remove()">
+  <!-- Logo: imgs/img1 (la extensión se detecta sola: png, jpg, jpeg, webp...) -->
+  <img class="logo-hero" data-img="imgs/img1" alt="Logo del juego">
   <h1>OPERACIÓN <span>PAMPLONITA</span><br>MISIÓN TIERRA</h1>
   <div class="tag" id="typed"></div>
   <p class="syn">Eres astronauta y científico. Despega desde la Estación Terrestre, analiza datos satelitales de la NASA y regresa a Cúcuta para <b>salvar y recuperar el río Pamplonita</b> antes de que sea tarde.</p>
   <div class="row">
-    <!-- PEGA AQUÍ EL LINK DE TU JUEGO (también en el botón JUGAR del menú: id="navPlay") -->
+    <!-- PEGA AQUÍ EL LINK DE TU JUEGO -->
     <a class="btn play" id="playBtn" href="AQUÍ_VA_EL_LINK_DEL_JUEGO" target="_blank" rel="noopener">JUGAR AHORA</a>
-    <a class="btn ghost" href="#mision">VER MISIÓN</a>
   </div>
-  <div class="river"></div>
 </section>
 
 <!-- ============ CAPTURAS ============ -->
@@ -162,11 +152,10 @@ footer .px{font-family:var(--px);font-size:.65rem;color:var(--yellow);line-heigh
   <div class="carousel pixel reveal">
     <button class="arrow prev" aria-label="Anterior">&lt;</button>
     <div class="track" id="track">
-      <!-- Reemplaza las rutas captura1.png ... captura5.png por tus imágenes -->
-      <div class="slide"><img src="captura1.png" alt="Astronauta en órbita"><div class="cap">CAPTURA 1 · EN ÓRBITA</div></div>
-      <div class="slide"><img src="captura2.png" alt="Estación Terrestre NASA"><div class="cap">CAPTURA 2 · ESTACIÓN TERRESTRE</div></div>
-      <div class="slide"><img src="captura3.png" alt="Río Pamplonita, Cúcuta"><div class="cap">CAPTURA 3 · RÍO PAMPLONITA</div></div>
-      <div class="slide"><img src="captura4.png" alt="Captura 4"><div class="cap">CAPTURA 4 · (TU TÍTULO)</div></div>
+      <!-- Capturas: imgs/g, imgs/f, imgs/h -->
+      <div class="slide"><img data-img="imgs/g.jpeg" alt="Astronauta en órbita"><div class="cap">CAPTURA 1 · EN ÓRBITA</div></div>
+      <div class="slide"><img data-img="imgs/f.png" alt="Estación Terrestre NASA"><div class="cap">CAPTURA 2 · ESTACIÓN TERRESTRE</div></div>
+      <div class="slide"><img data-img="imgs/h.png" alt="Río Pamplonita, Cúcuta"><div class="cap">CAPTURA 3 · RÍO PAMPLONITA</div></div>
     </div>
     <button class="arrow next" aria-label="Siguiente">&gt;</button>
   </div>
@@ -177,7 +166,7 @@ footer .px{font-family:var(--px);font-size:.65rem;color:var(--yellow);line-heigh
 <!-- ============ MISIÓN ============ -->
 <section id="mision">
   <h2 class="reveal">SOBRE LA MISIÓN</h2>
-  <p class="sub reveal">Un RPG 2D donde la ciencia espacial se convierte en acción para tu ciudad.</p>
+  <p class="sub reveal">Un juego RPG 2D donde la ciencia espacial se convierte en acción para tu ciudad.</p>
   <div class="grid">
     <article class="card pixel reveal"><div class="ico">01</div><h3>EXPLORA EN 2D</h3>
       <p>Muévete por la Estación Terrestre, entra a los módulos (Hábitat, Laboratorio, Centro de Control, Taller CubeSat) y desbloquéalos a medida que avanzas.</p>
@@ -192,23 +181,25 @@ footer .px{font-family:var(--px);font-size:.65rem;color:var(--yellow);line-heigh
       <p>Prepara la nave, lanza tu misión y vuelve a Cúcuta con conocimiento para transformar tu comunidad.</p>
       <div class="stat">ÉPICA<div class="bar"><i data-w="90%"></i></div></div></article>
   </div>
-  <div class="data pixel reveal"><b>¿Cómo usamos los datos?</b> Aquí puedes explicar qué datasets de NASA usaron (p. ej. Earthdata, Landsat, MODIS, GPM) y cómo se reflejan en las mecánicas del juego.</div>
+  <div class="data pixel reveal"><b>¿Cómo usamos los datos?</b> Ciencia espacial conectada con un desafío de Cúcuta. Nos apoyamos en información ambiental de CORPONOR sobre el río Pamplonita y en recursos de NASA como CubeSat 101, Design and Develop Science Missions, Mission Design Lab y Build It Yourself para inspirar una experiencia de exploración, planificación y toma de decisiones.</div>
 </section>
 
 <!-- ============ EQUIPO ============ -->
 <section id="equipo">
-  <h2 class="reveal">SELECCIÓN DE PERSONAJE</h2>
-  <p class="sub reveal">El equipo detrás de la misión.</p>
+  <h2 class="reveal">LAS PERSONAS DETRÁS DEL PROYECTO</h2>
+  <p class="sub reveal">Conoce al equipo que hizo posible Operación Pamplonita.</p>
   <div class="team">
-    <!-- Duplica una tarjeta por integrante. Cambia nombre, rol y reemplaza avatar1.png ... avatar4.png por tus fotos -->
-    <article class="char pixel reveal"><div class="avatar"><img src="avatar1.png" alt="Integrante 1" onerror="this.remove()">FOTO</div>
-      <h3>NOMBRE 1</h3><div class="role">Rol: Líder / Game Designer</div><div class="lvl">NIV. 99</div></article>
-    <article class="char pixel reveal"><div class="avatar"><img src="avatar2.png" alt="Integrante 2" onerror="this.remove()">FOTO</div>
-      <h3>NOMBRE 2</h3><div class="role">Rol: Programador (Godot)</div><div class="lvl">NIV. 99</div></article>
-    <article class="char pixel reveal"><div class="avatar"><img src="avatar3.png" alt="Integrante 3" onerror="this.remove()">FOTO</div>
-      <h3>NOMBRE 3</h3><div class="role">Rol: Arte Pixel Art</div><div class="lvl">NIV. 99</div></article>
-    <article class="char pixel reveal"><div class="avatar"><img src="avatar4.png" alt="Integrante 4" onerror="this.remove()">FOTO</div>
-      <h3>NOMBRE 4</h3><div class="role">Rol: Datos científicos NASA</div><div class="lvl">NIV. 99</div></article>
+    <!-- Fotos del equipo: imgs/1 ... imgs/5. Para agregar otro integrante, duplica una tarjeta -->
+    <article class="char pixel reveal"><div class="avatar"><img data-img="imgs/1.jpeg" alt="Josué Cañas" >FOTO</div>
+      <h3>JOSUÉ CAÑAS</h3><div class="role">Rol: Líder</div></article>
+    <article class="char pixel reveal"><div class="avatar"><img data-img="imgs/2.jpeg" alt="Jhonatanh Ramos" >FOTO</div>
+      <h3>JHONATANH RAMOS</h3><div class="role">Rol: Diseñador</div></article>
+    <article class="char pixel reveal"><div class="avatar"><img data-img="imgs/3.jpeg" alt="Michael Sepulveda" >FOTO</div>
+      <h3>MICHAEL SEPULVEDA</h3><div class="role">Rol: Programador</div></article>
+    <article class="char pixel reveal"><div class="avatar"><img data-img="imgs/4.jpeg" alt="Angel Rodriguez" >FOTO</div>
+      <h3>ANGEL RODRIGUEZ</h3><div class="role">Rol: Codiseñador</div></article>
+    <article class="char pixel reveal"><div class="avatar"><img data-img="imgs/5.jpeg" alt="Yoimar Serrano" >FOTO</div>
+      <h3>YOIMAR SERRANO</h3><div class="role">Rol: Coprogramador</div></article>
   </div>
 </section>
 
@@ -216,11 +207,6 @@ footer .px{font-family:var(--px);font-size:.65rem;color:var(--yellow);line-heigh
 <section id="galeria">
   <h2 class="reveal">GALERÍA DEL EVENTO</h2>
   <p class="sub reveal">Nosotros durante el NASA Space Apps Challenge 2026 en Cúcuta.</p>
-  <div class="up pixel reveal">
-    <label class="btn ghost" for="fileIn">SUBIR FOTOS</label>
-    <input type="file" id="fileIn" accept="image/*" multiple hidden>
-    <small>Las fotos que subas aquí se ven solo en tu navegador (vista previa). Para publicarlas para todos, guárdalas en la carpeta <b>galeria/</b> y agrégalas a la lista <b>FOTOS_EVENTO</b> del script.</small>
-  </div>
   <div class="gal" id="gal"></div>
 </section>
 
@@ -230,9 +216,19 @@ footer .px{font-family:var(--px);font-size:.65rem;color:var(--yellow);line-heigh
 </footer>
 
 <script>
-/* ===== Link del juego: cámbialo UNA sola vez aquí (o directamente en los href del HTML) ===== */
+/* ===== Link del juego: cámbialo UNA sola vez aquí (o directamente en el href del botón) ===== */
 const GAME_URL = "AQUÍ_VA_EL_LINK_DEL_JUEGO";
-if (!GAME_URL.startsWith("AQUÍ")) document.querySelectorAll('#playBtn,#navPlay').forEach(a => a.href = GAME_URL);
+if (!GAME_URL.startsWith("AQUÍ")) document.querySelectorAll('#playBtn').forEach(a => a.href = GAME_URL);
+
+/* ===== Carga de imágenes: prueba varias extensiones automáticamente ===== */
+const EXTS = ['png','jpg','jpeg','webp','PNG','JPG','JPEG'];
+function loadImg(im, base, onFail){
+  if (/\.\w{3,4}$/.test(base)) { im.onerror = () => { im.onerror = null; onFail && onFail(); }; im.src = base; return; }
+  let k = 0;
+  im.onerror = () => { if (++k < EXTS.length) im.src = base + '.' + EXTS[k]; else { im.onerror = null; onFail && onFail(); } };
+  im.src = base + '.' + EXTS[0];
+}
+document.querySelectorAll('img[data-img]').forEach(im => loadImg(im, im.dataset.img, () => im.remove()));
 
 /* ===== Estrellas animadas ===== */
 const cv = document.getElementById('stars'), cx = cv.getContext('2d');
@@ -303,30 +299,21 @@ lb.onclick = () => lb.classList.remove('show');
 addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('show'); if (e.key === 'ArrowRight') go(idx+1); if (e.key === 'ArrowLeft') go(idx-1); });
 
 /* ===== Galería del evento ===== */
-// Agrega aquí tus fotos: guarda las imágenes en la carpeta galeria/ y añade una línea por foto
+// Fotos de la galería: guarda las imágenes en la carpeta imgs/ y añade una línea por foto (sin extensión).
 const FOTOS_EVENTO = [
-  { src: 'galeria/evento1.jpg', t: 'Trabajando en el juego' },
-  { src: 'galeria/evento2.jpg', t: 'Todo el equipo' },
-  { src: 'galeria/evento3.jpg', t: 'Presentación' },
-  { src: 'galeria/evento4.jpg', t: 'Programando' },
-  { src: 'galeria/evento5.jpg', t: 'Probando la misión' },
-  { src: 'galeria/evento6.jpg', t: 'Foto final' }
+  { src: 'imgs/y' },
+  { src: 'imgs/z' }
 ];
 const gal = document.getElementById('gal');
-function addPhoto(src, cap, first){
+function addPhoto(src, cap){
   const f = document.createElement('figure'); f.className = 'ph';
-  const im = new Image(); im.src = src; im.alt = cap; im.loading = 'lazy';
-  im.onerror = () => im.remove();
+  const im = new Image(); im.alt = cap; loadImg(im, src, () => f.remove());
   f.append(im);
   if (cap){ const c = document.createElement('figcaption'); c.textContent = cap; f.append(c); }
   f.onclick = () => { if (im.isConnected){ lbi.src = im.src; lb.classList.add('show'); } };
-  first ? gal.prepend(f) : gal.append(f);
+  gal.append(f);
 }
-FOTOS_EVENTO.forEach(p => addPhoto(p.src, p.t));
-document.getElementById('fileIn').addEventListener('change', e => {
-  [...e.target.files].forEach(file => addPhoto(URL.createObjectURL(file), 'Foto nueva', true));
-  e.target.value = '';
-});
+FOTOS_EVENTO.forEach(p => addPhoto(p.src, p.t || ''));
 
 /* ===== Reveal al hacer scroll + barras de stats ===== */
 const io = new IntersectionObserver(es => es.forEach(e => {
