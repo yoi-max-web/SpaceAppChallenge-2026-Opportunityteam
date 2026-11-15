@@ -136,12 +136,12 @@ footer .px{font-family:var(--px);font-size:.65rem;color:var(--yellow);line-heigh
 <section class="hero" id="inicio">
   <!-- Logo: imgs/img1 (la extensión se detecta sola: png, jpg, jpeg, webp...) -->
   <img class="logo-hero" data-img="imgs/img1" alt="Logo del juego">
-  <h1>OPERACIÓN <span>PAMPLONITA</span><br>MISIÓN TIERRA</h1>
+  <h1>MISIÓN <span>PAMPLONITA</span><br>OPERACIÓN CÚCUTA</h1>
   <div class="tag" id="typed"></div>
   <p class="syn">Eres astronauta y científico. Despega desde la Estación Terrestre, analiza datos satelitales de la NASA y regresa a Cúcuta para <b>salvar y recuperar el río Pamplonita</b> antes de que sea tarde.</p>
   <div class="row">
     <!-- PEGA AQUÍ EL LINK DE TU JUEGO -->
-    <a class="btn play" id="playBtn" href="AQUÍ_VA_EL_LINK_DEL_JUEGO" target="_blank" rel="noopener">JUGAR AHORA</a>
+    <a class="btn play" id="playBtn" href="https://jhonatanr-ctrl.itch.io/mision-pamplonita-opportunity" target="_blank" rel="noopener">JUGAR AHORA</a>
   </div>
 </section>
 
@@ -196,7 +196,7 @@ footer .px{font-family:var(--px);font-size:.65rem;color:var(--yellow);line-heigh
       <h3>JHONATANH RAMOS</h3><div class="role">Rol: Diseñador</div></article>
     <article class="char pixel reveal"><div class="avatar"><img data-img="imgs/3.jpeg" alt="Michael Sepulveda" >FOTO</div>
       <h3>MICHAEL SEPULVEDA</h3><div class="role">Rol: Programador</div></article>
-    <article class="char pixel reveal"><div class="avatar"><img data-img="imgs/4.jpeg" alt="Angel Rodriguez" >FOTO</div>
+    <article class="char pixel reveal"><div class="avatar"><img data-img="imgs/4.jpg" alt="Angel Rodriguez" >FOTO</div>
       <h3>ANGEL RODRIGUEZ</h3><div class="role">Rol: Codiseñador</div></article>
     <article class="char pixel reveal"><div class="avatar"><img data-img="imgs/5.jpeg" alt="Yoimar Serrano" >FOTO</div>
       <h3>YOIMAR SERRANO</h3><div class="role">Rol: Coprogramador</div></article>
@@ -299,10 +299,12 @@ lb.onclick = () => lb.classList.remove('show');
 addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('show'); if (e.key === 'ArrowRight') go(idx+1); if (e.key === 'ArrowLeft') go(idx-1); });
 
 /* ===== Galería del evento ===== */
-// Fotos de la galería: guarda las imágenes en la carpeta imgs/ y añade una línea por foto (sin extensión).
+// Fotos de la galería: guarda las imágenes en la carpeta imgs/ y añade una línea por foto.
+// (Si no pones extensión, la detecta sola; si la pones, usa esa exacta.)
 const FOTOS_EVENTO = [
   { src: 'imgs/y' },
-  { src: 'imgs/z' }
+  { src: 'imgs/z' },
+  { src: 'imgs/grupal.jpeg' }
 ];
 const gal = document.getElementById('gal');
 function addPhoto(src, cap){
